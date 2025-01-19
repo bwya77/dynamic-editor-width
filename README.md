@@ -77,4 +77,4 @@ If you encounter any issues or have suggestions:
 
 ## License
 
-MIT
+[MIT](https://github.com/bwya77/dynamic-editor-width/blob/main/LICENSE)
