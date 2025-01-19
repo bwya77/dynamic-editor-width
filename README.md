@@ -4,7 +4,7 @@ Dynamically adjust your editor's text width via a status bar input or per-note Y
 
 ## Demo
 
-![Demo video](/images/demo.mp4) 
+![Demo video](/images/demo.gif) 
 
 ## Features
 
