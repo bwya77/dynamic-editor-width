@@ -1,6 +1,6 @@
 # Dynamic Editor Width
 
-Dynamically adjust your editor's text width via a status bar input or per-note YAML settings for a personalized writing space.
+Dynamically adjust your editor's text width via a status bar input or per-note YAML settings for a personalized writing space. This extension was inspired by the [Editor Width Slider](https://github.com/MugishoMp/obsidian-editor-width-slider/tree/master) extension, but I have added additional features and changed how it renders the page so there is no more delay. 
 
 ## Demo
 
