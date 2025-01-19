@@ -2,7 +2,9 @@
 
 Dynamically adjust your editor's text width via a status bar input or per-note YAML settings for a personalized writing space.
 
-![Plugin Settings](/images/settings.png)
+## Demo
+
+![Demo video](/images/demo.mp4) 
 
 ## Features
 
