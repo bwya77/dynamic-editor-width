@@ -95,7 +95,7 @@ Want to contribute or modify the plugin? Here's how to get started with the sour
 
 3. Navigate to the plugin directory:
    ```bash
-   cd autofit-tabs
+   cd dynamic-editor-width
    ```
 
 4. Install dependencies:
