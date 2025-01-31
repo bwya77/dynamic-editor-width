@@ -25,21 +25,16 @@ class EditorWidthInput extends Plugin {
     sliderValue: HTMLSpanElement | null;
 
     constructor(app: App, manifest: any) {
-    super(app, manifest);
-    this.pattern = /^(?:[0-9]{1,2}|100)$/;
-    this.currentWidth = null;
-    this.statusBarInput = null;
-    this.statusBarItemEl = null;
-    this.sliderValue = null;
-}
+        super(app, manifest);
+        this.pattern = /^(?:[0-9]{1,2}|100)$/;
+        this.currentWidth = null;
+        this.statusBarInput = null;
+        this.statusBarItemEl = null;
+        this.sliderValue = null;
+    }
 
     async onload() {
         await this.loadSettings();
-        
-        if (this.settings.editorWidth === this.settings.editorWidthDefault) {
-            this.settings.editorWidth = this.settings.editorWidthDefault;
-            await this.saveSettings();
-        }
         
         this.addBaseStyles();
         
@@ -263,28 +258,28 @@ class EditorWidthSettingTab extends PluginSettingTab {
         containerEl.empty();
 
         new Setting(containerEl)
-            .setName("Default Editor Width")
-            .setDesc("Set the default editor width value. This will be used for all notes unless overridden by frontmatter.")
+            .setName("Default editor width")
+            .setDesc("Set the default editor width value (0-100). This will be used for all notes unless overridden by adding 'editor-width: [value]' to a note's YAML frontmatter.")
             .addText(text => text
                 .setPlaceholder("20")
                 .setValue(this.plugin.settings.editorWidthDefault)
                 .onChange(async (value) => {
-    if (this.plugin.validateString(value)) {
-        this.plugin.settings.editorWidthDefault = value;
-        const file = this.plugin.app.workspace.getActiveFile();
-        if (file) {  // Add this null check
-            const metadata = this.plugin.app.metadataCache.getFileCache(file);
-            if (!metadata?.frontmatter?.["editor-width"]) {
-                this.plugin.settings.editorWidth = value;
-                this.plugin.updateEditorClass();
-            }
-        }
-        await this.plugin.saveSettings();
-    }
-}));
+                    if (this.plugin.validateString(value)) {
+                        this.plugin.settings.editorWidthDefault = value;
+                        const file = this.plugin.app.workspace.getActiveFile();
+                        if (file) {
+                            const metadata = this.plugin.app.metadataCache.getFileCache(file);
+                            if (!metadata?.frontmatter?.["editor-width"]) {
+                                this.plugin.settings.editorWidth = value;
+                                this.plugin.updateEditorClass();
+                            }
+                        }
+                        await this.plugin.saveSettings();
+                    }
+                }));
 
         new Setting(containerEl)
-            .setName("Show Width Control in Status Bar")
+            .setName("Show width control in status bar")
             .setDesc("Toggle visibility of the width control input in the status bar.")
             .addToggle(toggle => toggle
                 .setValue(this.plugin.settings.showInStatusBar)
@@ -295,10 +290,10 @@ class EditorWidthSettingTab extends PluginSettingTab {
                 }));
 
         new Setting(containerEl)
-            .setName("Control Style")
+            .setName("Control style")
             .setDesc("Choose between a text input or slider control in the status bar.")
             .addDropdown(dropdown => dropdown
-                .addOption("input", "Input Box")
+                .addOption("input", "Input box")
                 .addOption("slider", "Slider")
                 .setValue(this.plugin.settings.controlStyle)
                 .onChange(async (value) => {
@@ -309,10 +304,6 @@ class EditorWidthSettingTab extends PluginSettingTab {
                     }
                     await this.plugin.saveSettings();
                 }));
-
-        new Setting(containerEl)
-            .setName("Note:")
-            .setDesc(`To override the default width for a specific note, add "editor-width: [value]" to that note's YAML frontmatter.`);
     }
 }
 
