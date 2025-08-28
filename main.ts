@@ -174,9 +174,31 @@ class EditorWidthInput extends Plugin {
         
         let styles = '';
         for (let i = 0; i <= 100; i += 5) {
+            const width = `calc(700px + ${i * 10}px)`;
             styles += `
-                .editor-width-${i} {
-                    --file-line-width: calc(700px + ${i * 10}px) !important;
+                body.editor-width-${i} {
+                    --file-line-width: ${width} !important;
+                    --line-width: ${width} !important;
+                    --line-width-adaptive: ${width} !important;
+                    --line-width-wide: ${width} !important;
+                    --readable-line-length: ${width} !important;
+                    --max-width: ${width} !important;
+                    --normal-line-width: ${width} !important;
+                }
+                
+                body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer,
+                body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer .cm-content,
+                body.editor-width-${i} .markdown-reading-view .markdown-preview-view,
+                body.editor-width-${i} .markdown-preview-view .markdown-preview-section,
+                body.editor-width-${i} .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller > .cm-contentContainer > .cm-content,
+                body.editor-width-${i} .view-content .reading-view-content .markdown-preview-view {
+                    max-width: ${width} !important;
+                    width: ${width} !important;
+                }
+                
+                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer,
+                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer .cm-content {
+                    max-width: ${width} !important;
                 }
             `;
         }
