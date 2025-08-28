@@ -38,9 +38,21 @@ class EditorWidthInput extends Plugin {
         
         this.addBaseStyles();
         
+        // Register multiple events to ensure frontmatter is applied
         this.registerEvent(
             this.app.workspace.on("file-open", () => this.updateEditorClass())
         );
+        this.registerEvent(
+            this.app.workspace.on("active-leaf-change", () => this.updateEditorClass())
+        );
+        this.registerEvent(
+            this.app.workspace.on("layout-change", () => this.updateEditorClass())
+        );
+        
+        // Apply initial width on load
+        this.app.workspace.onLayoutReady(() => {
+            this.updateEditorClass();
+        });
         
         if (this.settings.showInStatusBar) {
             this.createInput();
@@ -186,19 +198,37 @@ class EditorWidthInput extends Plugin {
                     --normal-line-width: ${width} !important;
                 }
                 
+                /* Edit mode selectors */
                 body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer,
                 body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer .cm-content,
-                body.editor-width-${i} .markdown-reading-view .markdown-preview-view,
-                body.editor-width-${i} .markdown-preview-view .markdown-preview-section,
                 body.editor-width-${i} .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller > .cm-contentContainer > .cm-content,
-                body.editor-width-${i} .view-content .reading-view-content .markdown-preview-view {
+                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer,
+                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer .cm-content {
                     max-width: ${width} !important;
                     width: ${width} !important;
                 }
                 
-                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer,
-                body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer .cm-content {
+                /* View/Reading mode - simple approach */
+                body.editor-width-${i} .markdown-preview-view .markdown-preview-sizer {
                     max-width: ${width} !important;
+                    margin: 0 auto !important;
+                }
+                
+                body.editor-width-${i} .markdown-reading-view .markdown-preview-sizer {
+                    max-width: ${width} !important;  
+                    margin: 0 auto !important;
+                }
+                
+                body.editor-width-${i} .markdown-preview-section {
+                    max-width: 100% !important;
+                    width: 100% !important;
+                }
+                
+                /* Handle readable line width setting */
+                body.editor-width-${i}.is-readable-line-width .markdown-preview-sizer,
+                body.editor-width-${i} .is-readable-line-width .markdown-preview-sizer {
+                    max-width: ${width} !important;
+                    margin: 0 auto !important;
                 }
             `;
         }
@@ -218,6 +248,11 @@ class EditorWidthInput extends Plugin {
         const metadata = this.app.metadataCache.getFileCache(file);
         
         let width = metadata?.frontmatter?.["editor-width"];
+        
+        // Convert to string if it's a number in frontmatter
+        if (width !== undefined && width !== null) {
+            width = String(width);
+        }
         
         if (!width || !this.validateString(width)) {
             width = this.settings.editorWidthDefault;
