@@ -198,14 +198,13 @@ class EditorWidthInput extends Plugin {
                     --normal-line-width: ${width} !important;
                 }
                 
-                /* Edit mode selectors */
+                /* Edit mode selectors - use only max-width to allow tables to size naturally */
                 body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer,
                 body.editor-width-${i} .markdown-source-view.mod-cm6 .cm-contentContainer .cm-content,
                 body.editor-width-${i} .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller > .cm-contentContainer > .cm-content,
                 body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer,
                 body.editor-width-${i} .markdown-source-view.mod-cm6.is-readable-line-width .cm-contentContainer .cm-content {
                     max-width: ${width} !important;
-                    width: ${width} !important;
                 }
                 
                 /* View/Reading mode - simple approach */
@@ -219,9 +218,10 @@ class EditorWidthInput extends Plugin {
                     margin: 0 auto !important;
                 }
                 
-                body.editor-width-${i} .markdown-preview-section {
+                /* Preserve natural table sizing */
+                body.editor-width-${i} table {
+                    width: auto !important;
                     max-width: 100% !important;
-                    width: 100% !important;
                 }
                 
                 /* Handle readable line width setting */
